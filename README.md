@@ -89,7 +89,6 @@ from pyswip import Prolog, registerForeign
 
 def hello(t):
     print("Hello,", t)
-hello.arity = 1
 
 registerForeign(hello)
 
