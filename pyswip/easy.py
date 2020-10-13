@@ -24,6 +24,7 @@
 
 
 import sys
+import inspect
 
 from pyswip.core import *
 
@@ -532,7 +533,14 @@ def registerForeign(func, name=None, arity=None, flags=0):
     global cwraps
 
     if arity is None:
-        arity = func.arity
+        if hasattr(func, 'arity'):
+            arity = func.arity
+        else:
+            signature = inspect.signature(func)
+            arity = 0
+            for param in signature.parameters.values():
+                if param.kind == inspect.Parameter.POSITIONAL_OR_KEYWORD:
+                    arity += 1
 
     if name is None:
         name = func.__name__
